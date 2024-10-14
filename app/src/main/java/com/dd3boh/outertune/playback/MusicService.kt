@@ -177,6 +177,7 @@ class MusicService : MediaLibraryService(),
 
     lateinit var player: ExoPlayer
     private lateinit var mediaSession: MediaLibrarySession
+    private var mediaController: MediaController? = null
 
     private var isAudioEffectSessionOpened = false
 
@@ -317,7 +318,7 @@ class MusicService : MediaLibraryService(),
         // Keep a connected controller so that notification works
         val sessionToken = SessionToken(this, ComponentName(this, MusicService::class.java))
         val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
-        controllerFuture.addListener({ controllerFuture.get() }, MoreExecutors.directExecutor())
+        controllerFuture.addListener({ mediaController = controllerFuture.get() }, MoreExecutors.directExecutor())
 
         connectivityManager = getSystemService()!!
 
@@ -840,6 +841,7 @@ class MusicService : MediaLibraryService(),
             }
         }
         mediaSession.release()
+        mediaController?.release()
         player.removeListener(this)
         player.removeListener(sleepTimer)
         player.release()
