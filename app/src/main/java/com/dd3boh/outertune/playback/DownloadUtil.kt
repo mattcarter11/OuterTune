@@ -138,7 +138,7 @@ class DownloadUtil @Inject constructor(
             false)
     }
 
-    fun ResumeDownloadsOnStart(context: Context){
+    fun resumeDownloadsOnStart(context: Context){
         DownloadService.sendResumeDownloads(
             context,
             ExoDownloadService::class.java,
